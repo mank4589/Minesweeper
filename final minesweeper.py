@@ -121,46 +121,63 @@ class Minesweeper:
         game.print_board()
 
         
-game = Minesweeper(10, 10, 7)
+game = Minesweeper(10, 10, num_mines)
 player_name=input('Enter your name: ')
 while True:
-    game.print_board()
-    print("Options:")
-    print("1. Reveal a cell")
-    print("2. Mark a potential mine location")
-    print("3. Display leaderboard")
+    print("Choose Difficulty:")
+    print("1. Easy")
+    print("2. Medium")
+    print("3. Hard")
     choice = input("Enter your choice : ")
 
     if choice == '1':
-        row = int(input("Enter the row to reveal: "))
-        col = int(input("Enter the column to reveal: "))
-        result = game.reveal_cell(row, col)
-        if result is not None:
-            if result:
-                print("The cell is not a mine.")
-            else:
-                game_won = False
-                print("Game over! The cell is a mine.")
-                game.reveal_all_mines() 
-                elapsed_time = game.get_elapsed_time()
-                print(f"Time taken: {elapsed_time:.2f} seconds")
-                game.update_leaderboard(player_name, elapsed_time,game_won)
-                break
-            if all(cell or (i * game.cols + j) in game.mine_locations for i, cells in enumerate(game.revealed_cells) for j, cell in enumerate(cells)):
-                game_won = True
-                print("All cells revealed. You win!")
-                elapsed_time = game.get_elapsed_time()
-                print(f"Time taken: {elapsed_time:.2f} seconds")
-                game.update_leaderboard(player_name, elapsed_time,game_won)
-                game.reveal_all_mines() 
-                break
+        num_mines = 5
     elif choice == '2':
-        row = int(input("Enter the row to mark: "))
-        col = int(input("Enter the column to mark: "))
-        game.mark_mine_location(row, col)
-        game.print_board()
+        num_mines = 8
     elif choice == '3':
-        game.display_leaderboard()
+        num_mines = 12
     else:
-        print("Invalid choice. Please enter 1 or 2.")
+        print("Invalid choice. Please enter 1 or 2 or 3.")
 
+
+    while True:
+        game.print_board()
+        print("Options:")
+        print("1. Reveal a cell")
+        print("2. Mark a potential mine location")
+        print("3. Display leaderboard")
+        choice = input("Enter your choice : ")
+    
+        if choice == '1':
+            row = int(input("Enter the row to reveal: "))
+            col = int(input("Enter the column to reveal: "))
+            result = game.reveal_cell(row, col)
+            if result is not None:
+                if result:
+                    print("The cell is not a mine.")
+                else:
+                    game_won = False
+                    print("Game over! The cell is a mine.")
+                    game.reveal_all_mines() 
+                    elapsed_time = game.get_elapsed_time()
+                    print(f"Time taken: {elapsed_time:.2f} seconds")
+                    game.update_leaderboard(player_name, elapsed_time,game_won)
+                    break
+                if all(cell or (i * game.cols + j) in game.mine_locations for i, cells in enumerate(game.revealed_cells) for j, cell in enumerate(cells)):
+                    game_won = True
+                    print("All cells revealed. You win!")
+                    elapsed_time = game.get_elapsed_time()
+                    print(f"Time taken: {elapsed_time:.2f} seconds")
+                    game.update_leaderboard(player_name, elapsed_time,game_won)
+                    game.reveal_all_mines() 
+                    break
+        elif choice == '2':
+            row = int(input("Enter the row to mark: "))
+            col = int(input("Enter the column to mark: "))
+            game.mark_mine_location(row, col)
+            game.print_board()
+        elif choice == '3':
+            game.display_leaderboard()
+        else:
+            print("Invalid choice. Please enter 1 or 2 or 3.")
+    
