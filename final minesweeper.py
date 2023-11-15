@@ -121,7 +121,6 @@ class Minesweeper:
         game.print_board()
 
         
-game = Minesweeper(10, 10, num_mines)
 player_name=input('Enter your name: ')
 while True:
     print("Choose Difficulty:")
@@ -139,6 +138,8 @@ while True:
     else:
         print("Invalid choice. Please enter 1 or 2 or 3.")
 
+
+    game = Minesweeper(10, 10, num_mines)
 
     while True:
         game.print_board()
