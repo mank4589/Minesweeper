@@ -14,10 +14,7 @@ class Minesweeper:
         self.calculate_adjacent_mines()
         self.start_time = None
         
-        
-
-    def create_leaderboard_table(self):
-            
+    def create_leaderboard_table(self): 
             cursor = self.conn.cursor()
             cursor.execute(
                 '''CREATE TABLE IF NOT EXISTS leaderboard (
@@ -82,15 +79,12 @@ class Minesweeper:
         else:
             print("Cannot mark a revealed cell. Choose another cell.")
             
-
-
     def print_board(self):
         table = PrettyTable()
         table.field_names = [''] + [str(i) for i in range(self.cols)]
         for i in range(self.rows):
             row = [str(i)] + [self.get_display_value(i, j) for j in range(self.cols)]
             table.add_row(row)
-    
         print(table)
 
     def get_display_value(self, row, col):
@@ -127,12 +121,7 @@ class Minesweeper:
                 if self.conn.is_connected():
                     self.conn.close()
                     print("Database connection closed.")
-
-    
-    
-
-
-            
+          
     def reveal_all_mines(self):
         for loc in self.mine_locations:
             row, col = divmod(loc, self.cols)
@@ -141,8 +130,7 @@ class Minesweeper:
 
     def __del__(self):
         pass
-        
-        
+            
 def display_leaderboard():
         try:
             conn = mysql.connector.connect(
@@ -266,7 +254,6 @@ def start_game():
             
             else:
                 print("Invalid choice. Please enter 1, 2, or 3.")
-
 
 
 if __name__ == "__main__":
