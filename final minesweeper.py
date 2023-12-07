@@ -14,7 +14,13 @@ class Minesweeper:
         self.place_mines()
         self.calculate_adjacent_mines()
         self.start_time = None
-        
+        self.conn = mysql.connector.connect(
+                host='localhost',
+                user='root',
+                passwd='4589',
+                database='minesweeper_leaderboard'
+            )
+
     def create_leaderboard_table(self): 
             cursor = self.conn.cursor()
 
@@ -23,7 +29,6 @@ class Minesweeper:
                     id INTEGER PRIMARY KEY AUTO_INCREMENT,
                     player_name TEXT,
                     elapsed_time REAL,
-                    game_won INTEGER,
                     difficulty_mode TEXT,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
 
@@ -34,7 +39,7 @@ class Minesweeper:
         self.mine_locations = random.sample(range(self.rows * self.cols), self.num_mines)
         for loc in self.mine_locations:
             row, col = divmod(loc, self.cols)
-            self.board[row][col] = 'M'
+            self.board[row][col] = '🤯'
 
     def calculate_adjacent_mines(self):
 
@@ -44,7 +49,7 @@ class Minesweeper:
             for i, j in directions:
                 new_row, new_col = row + i, col + j
 
-                if 0 <= new_row < self.rows and 0 <= new_col < self.cols and self.board[new_row][new_col] != 'M':
+                if 0 <= new_row < self.rows and 0 <= new_col < self.cols and self.board[new_row][new_col] != '🤯':
                     if self.board[new_row][new_col] == ' ':
                         self.board[new_row][new_col] = '1'
                     else:
@@ -63,8 +68,9 @@ class Minesweeper:
                 self.reveal_empty_cells(row, col)
             return True
 
-     else:
+        else:
             print("Cell already revealed. Choose another cell.")
+        
             return None
 
     def reveal_empty_cells(self, row, col):
@@ -83,7 +89,7 @@ class Minesweeper:
     def mark_mine_location(self, row, col):
 
         if not self.revealed_cells[row][col]:
-            self.board[row][col] = 'F'
+            self.board[row][col] = '🚩'
             self.print_board()
         else:
             print("Cannot mark a revealed cell. Choose another cell.")
@@ -103,8 +109,8 @@ class Minesweeper:
 
         if self.revealed_cells[row][col]:
             return self.board[row][col]
-        elif self.board[row][col] == 'F':
-            return 'F'
+        elif self.board[row][col] == '🚩':
+            return '🚩'
         else:
             return '-'
 
@@ -115,15 +121,15 @@ class Minesweeper:
         else:
             return 0
 
-    def update_leaderboard(self, player_name, elapsed_time, game_won, difficulty_mode, play_date):
+    def update_leaderboard(self, player_name, elapsed_time,game_won, difficulty_mode, play_date):
 
         if game_won:
             try:
                 query = '''
-                    INSERT INTO leaderboard (player_name, elapsed_time, game_won, difficulty_mode, timestamp)
+                    INSERT INTO leaderboard (player_name, elapsed_time,game_won, difficulty_mode, timestamp)
                     VALUES (%s, %s, %s, %s, %s)
                 '''
-                values = (player_name, round(elapsed_time,2), 1, difficulty_mode, play_date)
+                values = (player_name, round(elapsed_time,2), 1,difficulty_mode, play_date)
                 cursor = self.conn.cursor()
                 cursor.execute(query, values)
                 self.conn.commit()
