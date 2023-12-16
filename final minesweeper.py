@@ -39,7 +39,7 @@ class Minesweeper:
         self.mine_locations = random.sample(range(self.rows * self.cols), self.num_mines)
         for loc in self.mine_locations:
             row, col = divmod(loc, self.cols)
-            self.board[row][col] = '🤯'
+            self.board[row][col] = '💣'
 
     def calculate_adjacent_mines(self):
 
@@ -49,7 +49,7 @@ class Minesweeper:
             for i, j in directions:
                 new_row, new_col = row + i, col + j
 
-                if 0 <= new_row < self.rows and 0 <= new_col < self.cols and self.board[new_row][new_col] != '🤯':
+                if 0 <= new_row < self.rows and 0 <= new_col < self.cols and self.board[new_row][new_col] != '💣':
                     if self.board[new_row][new_col] == ' ':
                         self.board[new_row][new_col] = '1'
                     else:
@@ -145,11 +145,14 @@ class Minesweeper:
                     print("Database connection closed.")
 
     def reveal_all_mines(self):
-
-        for loc in self.mine_locations:
-            row, col = divmod(loc, self.cols)
-            self.revealed_cells[row][col] = True
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.board[row][col] == '🚩' or (row * self.cols + col) in self.mine_locations:
+                    self.board[row][col] = '💣'
+                self.revealed_cells[row][col] = True
         self.print_board()
+
+
              
 def display_leaderboard():
 
