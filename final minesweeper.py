@@ -17,9 +17,10 @@ class Minesweeper:
         self.conn = mysql.connector.connect(
                 host='localhost',
                 user='root',
-                passwd='4589',
+                passwd='',
                 database='minesweeper_leaderboard'
             )
+        self.create_leaderboard_table()
 
     def create_leaderboard_table(self): 
             cursor = self.conn.cursor()
@@ -29,6 +30,7 @@ class Minesweeper:
                     id INTEGER PRIMARY KEY AUTO_INCREMENT,
                     player_name TEXT,
                     elapsed_time REAL,
+                    game_won INT,
                     difficulty_mode TEXT,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
 
@@ -152,15 +154,13 @@ class Minesweeper:
                 self.revealed_cells[row][col] = True
         self.print_board()
 
-
-             
 def display_leaderboard():
 
         try:
             conn = mysql.connector.connect(
                 host='localhost',
                 user='root',
-                passwd='4589',
+                passwd='',
                 database='minesweeper_leaderboard'
             )
             cursor = conn.cursor()
@@ -284,7 +284,6 @@ def start_game():
             
             else:
                 print("Invalid choice. Please enter 1, 2, or 3.")
-
 
 if __name__ == "__main__":
     main_menu()
