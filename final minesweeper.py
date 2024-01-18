@@ -26,13 +26,16 @@ class Minesweeper:
             cursor = self.conn.cursor()
 
             cursor.execute(
-                '''CREATE TABLE IF NOT EXISTS leaderboard (
-                    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-                    player_name TEXT,
-                    elapsed_time REAL,
-                    game_won INT,
-                    difficulty_mode TEXT,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
+              '''CREATE TABLE IF NOT EXISTS leaderboard (
+                id INTEGER PRIMARY KEY AUTO_INCREMENT,
+                player_name TEXT,
+                elapsed_time REAL,
+                game_won BOOLEAN,  -- Assuming it's a boolean value indicating whether the game was won or not
+                difficulty_mode TEXT,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )'''
+                )
+
 
             self.conn.commit()
             
