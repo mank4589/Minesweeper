@@ -30,7 +30,7 @@ class Minesweeper:
                 id INTEGER PRIMARY KEY AUTO_INCREMENT,
                 player_name TEXT,
                 elapsed_time REAL,
-                game_won BOOLEAN,  -- Assuming it's a boolean value indicating whether the game was won or not
+                game_won BOOLEAN,
                 difficulty_mode TEXT,
                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                 )'''
